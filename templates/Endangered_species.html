@@ -1,0 +1,120 @@
+{%  extends "base.html" %}
+{% load static %}
+
+{% block  content %}
+    <title>Ocean Guardians - Endangered Marine Species</title>
+    <link rel="stylesheet" href="{% static 'css/Endangered_species.css' %}">
+</head>
+<body>
+   <div class="video-wrapper" style="height: 0px;">
+    <video autoplay muted playsinline loop id="bg-video">
+        <source src="{% static 'videos/endangered_species-bg.mp4' %}" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+     <div class="video-overlay"></div>
+    
+    <div class="content-overlay">
+        <div class="container">
+            <section id="species">
+                <h2 style="color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);">Endangered Ocean Animals</h2>
+                <div class="species-grid">
+               
+                    <div class="species-card">
+                        <div class="species-image" style="background-image: url('{% static 'image/endangered_species_image/Vaquita_Porpoise2.jpg' %}');"></div>
+                        <div class="species-info">
+                            <h3>Vaquita Porpoise
+                            <button onclick="playSound('porpoise-audio')" style="font-size: 1.2rem; background: none; border: none; cursor: pointer;">🔉</button>
+                            </h3>
+                             <audio id="porpoise-audio" src="{% static 'voice/porpoise audio.mp3' %}" preload="auto"></audio>
+                            <span class="status critical">CRITICALLY ENDANGERED</span>
+                            <p>With fewer than 10 individuals remaining, the vaquita is the world's most endangered marine mammal.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="species-card">
+                        <div class="species-image" style="background-image: url('{% static 'image/endangered_species_image/Blue_Whale.jpg' %}');"></div>
+                        <div class="species-info">
+                            <h3>Blue Whale
+                            <button onclick="playSound('whale-audio')" style="font-size: 1.2rem; background: none; border: none; cursor: pointer;">🔉</button>
+                            </h3>
+                            <audio id="whale-audio" src="{% static 'voice/whale audio.mp3' %}" preload="auto"></audio>
+                            <span class="status endangered">ENDANGERED</span>
+                            <p>The largest animal on Earth, blue whales were hunted nearly to extinction and now face threats from ship strikes and ocean noise.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="species-card">
+                        <div class="species-image" style="background-image: url('{% static 'image/endangered_species_image/Sea_Otter.jpeg' %}');"></div>
+                        <div class="species-info">
+                            <h3>Sea Otter
+                            <button onclick="playSound('otter-audio')" style="font-size: 1.2rem; background: none; border: none; cursor: pointer;">🔉</button>
+                            </h3>
+                            <audio id="otter-audio" src="{% static 'voice/otter sound.mp3' %}" preload="auto"></audio>
+                            <span class="status endangered">ENDANGERED</span>
+                            <p>Once hunted for their fur, sea otters play a crucial role in maintaining kelp forest ecosystems by controlling sea urchin populations.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="species-card">
+                        <div class="species-image" style="background-image: url('{% static 'image/endangered_species_image/Hammerhead_Shark.jpeg' %}');"></div>
+                        <div class="species-info">
+                            <h3>Hammerhead Shark 🔇 
+    
+                            </h3>
+                           
+                            <span class="status endangered">ENDANGERED</span>
+                            <p>Several hammerhead species are endangered due to demand for their fins. As apex predators, their decline disrupts entire marine ecosystems.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="species-card">
+                        <div class="species-image" style="background-image: url('{% static 'image/endangered_species_image/Coral_Reefs.jpg' %}');"></div>
+                        <div class="species-info">
+                            <h3>Coral Reefs 🔇</h3>
+                            
+                            <span class="status vulnerable">VULNERABLE</span>
+                            <p>While not a single species, coral reef ecosystems are critically threatened by ocean acidification, warming waters, and pollution.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="species-card">
+                        <div class="species-image" style="background-image: url('{% static 'image/endangered_species_image/North_Atlantic_Right_Wale.jpeg' %}');"></div>
+                        <div class="species-info">
+                            <h3>North Atlantic Right Whale
+                            <button onclick="playSound('rwhale-audio')" style="font-size: 1.2rem; background: none; border: none; cursor: pointer;">🔉</button>
+                            </h3>
+                            <audio id="rwhale-audio" src="{% static 'voice/right whale audio.mp3' %}" preload="auto"></audio>
+                            <span class="status critical">CRITICALLY ENDANGERED</span>
+                            <p>With only about 350 remaining, these whales are threatened by ship strikes and entanglement in fishing gear.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="species-card">
+                        <div class="species-image" style="background-image: url('{% static 'image/endangered_species_image/Green_Sea_Turtle.jpeg' %}');"></div>
+                        <div class="species-info">
+                            <h3>Green Sea Turtle
+                            <button onclick="playSound('turtle-audio')" style="font-size: 1.2rem; background: none; border: none; cursor: pointer;">🔉</button>
+                            </h3>
+                            <audio id="turtle-audio" src="{% static 'voice/green sea turtle audio.mp3' %}" preload="auto"></audio>
+                            <span class="status endangered">ENDANGERED</span>
+                            <p>Named for the green color of their fat, these turtles face threats from habitat loss, bycatch, and pollution.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>   
+    </div>
+    <script>
+    function playSound(id) {
+        const audio = document.getElementById(id);
+        if (audio) {
+            if (!audio.paused) {
+                audio.pause();
+            }
+            audio.currentTime = 0;
+            audio.play();
+        }
+    }
+    </script>
+</body>
+    {% endblock %} 

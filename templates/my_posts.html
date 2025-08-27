@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+    <title>Ocean Conservation Community | My Posts</title>
+    <link rel="stylesheet" href="{% static 'css/posts.css' %}">
+
+    <div class="image-bg-wrapper">
+        <img src="{% static 'image/post_bg.jpg' %}" alt="Community Background">
+        <div class="image-overlay"></div>
+    </div>
+    <main>
+        <div class="container">
+            <h1 class="page-title">Ocean Conservation Community</h1>
+            
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <a href="{% url 'community_posts' %}" class="tab">Community Posts</a>
+                <a href="{% url 'create_post' %}" class="tab">Create Post</a>
+                <a href="{% url 'my_posts' %}" class="tab active">My Posts</a>
+            </div>
+                        
+            <!-- My Posts Tab -->
+            <div class="tab-content active" id="my-posts">
+                <div class="posts-header">
+                    <h2 class="page-title">My Conservation Stories</h2>
+                    <a href="{% url 'create_post' %}" class="btn" id="createNewPostBtn">Create New Post</a>
+                </div>
+                
+                <div class="posts-feed" id="myPostsFeed">
+                    {% for post in posts %}
+                    <div class="post-card" data-post-id="{{ post.id }}">
+                        {% if post.media.first %}
+                            <div class="post-media">
+                                {% with media=post.media.first %}
+                                    {% if media.file.name|lower|slice:'-4:' == '.mp4' %}
+                                        <video controls>
+                                            <source src="{{ media.file.url }}" type="video/mp4">
+                                        </video>
+                                    {% else %}
+                                        <img src="{{ media.file.url }}" alt="{{ post.title }}">
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="post-content">
+                            <div class="post-header">
+                                <div class="post-author">{{ post.author.username|first|upper }}</div>
+                                <div class="post-info">
+                                    <h3>{{ post.title }}</h3>
+                                    <p>Posted by {{ post.author.username }} • {{ post.created_at|naturaltime }}</p>
+                                </div>
+                            </div>
+                            <div class="post-text">
+                                <p style="color:#000">{{ post.content }}</p>
+                            </div>
+                            
+                            {% if post.tags %}
+                            <div class="post-tags">
+                                {% for tag in post.tags.split %}
+                                    <span class="tag">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            
+                            <div class="post-actions">
+                                <div class="action-btn like-btn">
+                                    <i class="far fa-thumbs-up"></i> 
+                                    <span class="like-count">{{ post.likes.count }}</span> Likes
+                                </div>
+                                <div class="action-btn">
+                                    <i class="far fa-comment"></i> 
+                                    <span class="comment-count">{{ post.comments.count }}</span> Comments
+                                </div>
+                                <div class="action-btn">
+                                    <a href="{% url 'edit_post' post.id %}" class="action-btn"><i class="fas fa-edit"></i> Edit</a>
+                                <div class="action-btn delete-post-btn">
+                                    <i class="fas fa-trash"></i> Delete
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state" id="noPostsMessage">
+                        <i class="fas fa-water"></i>
+                        <h3>No Posts Yet</h3>
+                        <p>You haven't shared any conservation stories yet. Start by creating your first post!</p>
+                        <a href="{% url 'create_post' %}" class="btn" id="createFirstPostBtn">Create Your First Post</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Handle delete post functionality
+        document.querySelectorAll('.delete-post-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const postCard = this.closest('.post-card');
+                const postId = postCard.getAttribute('data-post-id');
+                
+                if (confirm('Are you sure you want to delete this post?')) {
+                    fetch(`/posts/${postId}/delete/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'same-origin',
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            postCard.remove();
+                            // If no posts left, show empty state
+                            if (document.querySelectorAll('.post-card').length === 0) {
+                                document.getElementById('noPostsMessage').style.display = 'block';
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // Handle like button functionality
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const postCard = this.closest('.post-card');
+                const postId = postCard.getAttribute('data-post-id');
+                const likeCount = this.querySelector('.like-count');
+                
+                fetch(`/posts/${postId}/like/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'same-origin',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.liked) {
+                        this.innerHTML = '<i class="fas fa-thumbs-up"></i> ' + data.total_likes + ' Likes';
+                    } else {
+                        this.innerHTML = '<i class="far fa-thumbs-up"></i> ' + data.total_likes + ' Likes';
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <title>Edit Post | Ocean Conservation Community</title>
+    <link rel="stylesheet" href="{% static 'css/posts.css' %}">
+<head>
+<body>
+    <div class="image-bg-wrapper">
+        <img src="{% static 'image/post_bg.jpg' %}" alt="Community Background">
+        <div class="image-overlay"></div>
+    </div>
+    
+    <main>
+        <div class="container">
+            <h1 class="page-title">Edit Your Post</h1>
+            
+            <div class="post-form">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Existing fields -->
+                    <div class="form-group">
+                        <label for="id_title">Title</label>
+                        {{ form.title }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_content">Content</label>
+                        {{ form.content }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_location">Location</label>
+                        {{ form.location }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_tags">Tags (comma separated)</label>
+                        {{ form.tags }}
+                    </div>
+                    
+                    <!-- New media upload field -->
+                    <div class="form-group">
+                        <label for="id_new_media">Add More Media</label>
+                        <input type="file" name="new_media" id="id_new_media" multiple class="file-upload-input">
+                        <div class="file-upload" id="mediaUpload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Click to upload or drag and drop</span>
+                        </div>
+                        <div class="preview-container" id="mediaPreview"></div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Update Post</button>
+                        <a href="{% url 'my_posts' %}" class="cancel-btn">Cancel</a>
+                    </div>
+                </form>
+                
+                <!-- Existing media display -->
+                {% if post.media.all %}
+                <div class="existing-media">
+                    <h3>Current Media</h3>
+                    <div class="media-grid">
+                        {% for media in post.media.all %}
+                            <div class="media-item">
+                                {% if media.file.name|lower|slice:'-4:' == '.mp4' %}
+                                    <video controls>
+                                        <source src="{{ media.file.url }}" type="video/mp4">
+                                    </video>
+                                {% else %}
+                                    <img src="{{ media.file.url }}" alt="Post media">
+                                {% endif %}
+                                <form method="post" action="{% url 'delete_media' media.id %}" class="delete-media-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-media-btn">&times;</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // JavaScript for media upload preview (same as create_post.js)
+        const mediaUpload = document.getElementById('mediaUpload');
+        const mediaInput = document.getElementById('id_new_media');
+        const mediaPreview = document.getElementById('mediaPreview');
+
+        mediaUpload.addEventListener('click', function() {
+            mediaInput.click();
+        });
+
+        // ... rest of the preview script from create_post.js ...
+    </script>
+{% endblock %}

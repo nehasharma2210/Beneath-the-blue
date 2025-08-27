@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <title>Ocean Threats & Solutions | Web Wonder</title>
+    <link rel="stylesheet" href="{% static 'css/threats-solution.css' %}">
+    <link rel="preload" href= "{% static 'videos/home.mp4' %}" as="video">
+    <style>
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="bg-video" playsinline>
+        <source src="{% static 'videos/home.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay"></div>
+    <!-- Content wrapper for all page content -->
+    <div class="content-wrapper">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>SAVING OUR OCEANS</h1>
+                <p>Threats & Sustainable Solutions</p>
+            </div>
+        </section>
+        <section class="threats">
+            <h2>Major Threats to Marine Life</h2>
+            <div class="threats-grid">
+                {% comment %} Loop through the threats and display each one {% endcomment %}
+          
+                {% for threat in threats %}
+                <div class="threat-card">
+                    <img src="{{ threat.image.url }}" alt="{{ threat.title }}" class="threat-image">
+                    <h3>{{ threat.title }}</h3>
+                   <a href="{{ threat.url }}" class="solution-link"> <p>{{ threat.description }}</p>
+                <p> Learn More</p></a>
+                 </div>
+                {% endfor %}
+           
+        </section>
+
+        {% comment %} <section class="solutions">
+            <h2>Sustainable Solutions</h2>
+            <div class="solutions-grid">
+                {% for threat in threats %}
+                <div class="solution-card">
+                    <h3>{{ threat.title }} - Solutions</h3>
+                    <p>{{ threat.solution }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>  {% endcomment %}
+    </div>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <title>Ocean Exploration Quiz | Beneath The Blue</title>
+    <link rel="stylesheet" href="{% static 'css/quiz.css' %}">   
+</head>
+<body>
+    <div class="image-bg-wrapper">
+        <img src="{% static 'image/quiz_bg.jpg' %}" alt="Community Background">
+        <div class="image-overlay"></div>
+    </div>
+    <div class="content-overlay">
+        <main class="quiz-main">
+            <div class="quiz-container">
+                <div class="quiz-header-section">
+                    <h2 class="quiz-heading">
+                        Ocean & Marine Exploration Quiz
+                    </h2>
+                    <p class="quiz-subheading">
+                        Test your knowledge about the ocean and marine life with our quiz!
+                    </p>
+                </div>  
+    <div class="quiz-divider"></div>
+    <div class="quiz-form">
+    <p class="question-text">{{ question.text }}</p>
+    <p class="quiz-progress">Question {{ request.session.current_question_index|add:1 }} of {{ request.session.shuffled_questions|length }}</p>
+    
+    <form method="post" action="{% url 'next_question' %}">
+        {% csrf_token %}
+        <div class="quiz-options-container">
+            {% for answer in question.answer_set.all %}
+            <div class="option-item">
+                <input type="radio" name="answer" value="{{ answer.id }}" id="answer{{ forloop.counter }}">
+                <label for="answer{{ forloop.counter }}" class="option-label">
+                    {{ answer.text }}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="quiz-submit-btn">Next Question →</button>
+    </form>
+</div>
+            </div>
+        </main>
+    </div>
+</body>
+{% endblock %} 

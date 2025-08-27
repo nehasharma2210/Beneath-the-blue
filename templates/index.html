@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="{% static 'photo/logo.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <title>{% block title %}Beneath the Blue{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/f7b393d82e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- Full Page Video Background -->
+<video id="fullpage-video-bg" autoplay muted loop>
+    <source src="{% static 'videos/front_page.mp4' %}" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+<div id="video-overlay"></div>
+<!-- Google Fonts -->
+{% comment %} <div class="content-wrapper" style="margin-top: 90px;"> {% endcomment %}
+    <!-- Header -->
+ <header class="header">
+    <div class="container header-container">
+        <div class="logo">
+            <h1><a href="{% url 'home' %}">Beneath the Blue</a></h1>
+        </div>
+        <nav>
+            <ul class="main-nav">
+                <li class="menu-container">
+                    <div class="main_box">
+                        <input type="checkbox" id="check" />
+                        <label class="menu-icon" for="check">
+                            <i class="fa-solid fa-bars"></i>
+                        </label>
+
+                        <div class="sidebar_menu">
+                            <div class="menu-header">
+                                <label class="close-icon" for="check">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </label>
+                            </div>
+
+                            <div class="menu">
+                                <ul>
+                                    <li><a href="{% url 'community_posts' %}">Posts</a></li>
+                                    <li><a href="{% url 'explore_map' %}">Explore</a></li>
+                                    <li><a href="{% url 'threats' %}">Threats</a></li>
+                                    <li><a href="{% url 'endangered_species' %}">Species</a></li>
+                                    <li><a href="{% url 'community_page' %}">Community</a></li>
+                                    <li><a href="{% url 'quiz' %}">Quiz</a></li>
+                                    {% if user.is_authenticated %}
+                                        <li>
+                                            <form action="{% url 'user_logout' %}" method="post" class="logout-form">
+                                                {% csrf_token %}
+                                                <button type="submit" class="logout-btn">
+                                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                                </button>
+                                            </form>
+                                        </li>
+                                    {% else %}
+                                        <li><a href="{% url 'sign_in' %}">Sign In</a></li>
+                                        <li><a href="{% url 'sign_up' %}">Sign Up</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>   <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Discover the Mysteries Below</h2>
+                <p>Journey into the depths of our planet's last frontier and join the movement to protect our oceans.</p>
+                <a href="#explore" class="btn">Dive In</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Facts Section -->
+    <section class="quick-facts">
+        <div class="container">
+            <h3 class="section-title">Ocean Wonders</h3>
+            <div class="facts-grid">
+                <div class="fact-card">
+                    <span class="fact-number">71%</span>
+                    <p class="fact-text">of Earth's surface is ocean</p>
+                </div>
+                <div class="fact-card">
+                    <span class="fact-number">80%</span>
+                    <p class="fact-text">of ocean life is undiscovered</p>
+                </div>
+                <div class="fact-card">
+                    <span class="fact-number">50-80%</span>
+                    <p class="fact-text">of our oxygen comes from the sea</p>
+                </div>
+                <div class="fact-card">
+                    <span class="fact-number">10%</span>
+                    <p class="fact-text">of oceans have been explored</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+        <h3 class="section-title">Explore the Depths</h3>
+        
+        <!-- 1. OCEAN DEPTH EXPLORATION -->
+        <div class="feature" id="explore">
+            <div class="feature-text">
+                <h4>Deep Sea Explorer</h4>
+                <p>Navigate through marine ecosystems from sunlit surfaces to the mysterious midnight zone.</p>
+                <a href="#" class="btn">Begin Exploration</a>
+            </div>
+            <div class="feature-image">
+                <img src="{% static 'image/deep.avif' %}" 
+                     alt="Deep ocean with submarine lights">
+            </div>
+        </div>
+        
+        <!-- 2. OCEAN POLLUTION THREAT -->
+        <div class="feature" id="threats">
+            <div class="feature-image">
+                 <img src="{% static 'image/threats.jpg' %}" 
+                     alt="Plastic waste covering ocean surface">
+            </div>
+            <div class="feature-text">
+                <h4>Threats Below Surface</h4>
+                <p>See how pollution is destroying marine ecosystems worldwide.</p>
+                <a href="{% url 'explore_map' %}" class="btn">View Threats</a>
+            </div>
+        </div>
+        
+        <!-- 3. OCEAN SOLUTION -->
+        <div class="feature" id="solutions">
+            <div class="feature-text">
+                <h4>Hope From the Deep</h4>
+                <p>Discover innovative solutions restoring our oceans.</p>
+                <a href="#" class="btn">Learn Solutions</a>
+            </div>
+            <div class="feature-image">
+                 <img src="{% static 'image/solutions.jpg' %}" 
+                 alt="Team cleaning ocean pollution">
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Take Action Section -->
+    <section class="take-action" id="take-action">
+        <div class="container">
+            <h3 class="section-title">Make Waves</h3>
+            
+            <div class="action-tabs">
+                <button class="tab-button active" data-tab="pledge">Take the Pledge</button>
+                <button class="tab-button" data-tab="idea">Share Your Idea</button>
+                <button class="tab-button" data-tab="opinion">Give Feedback</button>
+            </div>
+            
+            <div class="tab-content active" id="pledge">
+                <form class="action-form" id="pledge-form" data-submit-url="{% url 'submit_pledge' %}">
+                    {% csrf_token %}
+                    <h4>Deep Blue Pledge</h4>
+                    <p>Commit to protecting our oceans. Your actions create ripples of change!</p>
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <p>I pledge to:</p>
+                        <label><input type="checkbox" name="eliminate_plastics"> Eliminate single-use plastics</label>
+                        <label><input type="checkbox" name="sustainable_seafood"> Choose sustainable seafood</label>
+                        <label><input type="checkbox" name="join_cleanups"> Join coastal cleanups</label>
+                        <label><input type="checkbox" name="reduce_footprint"> Reduce my carbon footprint</label>
+                        <label><input type="checkbox" name="support_conservation"> Support marine conservation</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="personal_promise">Personal Ocean Promise</label>
+                        <textarea id="personal_promise" name="personal_promise" placeholder="What specific actions will you take to protect our blue planet?"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn" name="form_type" value="submit_pledge">Make My Pledge</button>
+                </form>
+            </div>
+            
+            <div class="tab-content" id="idea">
+                <form class="action-form" id="idea-form" data-submit-url="{% url 'submit_idea' %}">
+                    {% csrf_token %}
+                    <h4>Share Your Blue Idea</h4>
+                    <p>Have an innovative concept to help our oceans? The sea needs your creativity!</p>
+                    
+                    <div class="form-group">
+                        <label for="idea-name">Your Name</label>
+                        <input type="text" id="idea-name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="idea-email">Email Address</label>
+                        <input type="email" id="idea-email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="idea-title">Idea Title</label>
+                        <input type="text" id="idea-title" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="idea-description">Describe Your Idea</label>
+                        <textarea id="idea-description" name="description" required placeholder="How does your idea help protect or explore our oceans?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="idea-category">Focus Area</label>
+                        <select id="idea-category" name="category">
+                            <option value="">Select focus</option>
+                            <option value="pollution">Pollution Solutions</option>
+                            <option value="research">Marine Research</option>
+                            <option value="education">Ocean Education</option>
+                            <option value="tech">Conservation Tech</option>
+                        </select>
+                    </div>
+                    
+                   <div class="modal-content-btn">
+                    <button type="submit" id="submitBtn">
+                        <span class="btn-text">SUBMIT IDEA</span>
+                        <div class="loading" style="display: none;"></div>
+                    </button>
+                </div>
+                </form>
+            </div>
+            
+            <div class="tab-content" id="opinion">
+                <form class="action-form" id="feedback-form" data-submit-url="{% url 'submit_feedback' %}">
+                    {% csrf_token %}
+                    <h4>Share Your Currents</h4>
+                    <p>Your feedback helps us improve Beneath the Blue.</p>
+                    
+                    <div class="form-group">
+                        <label for="feedback-name">Your Name</label>
+                        <input type="text" id="feedback-name" name="name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedback-email">Email Address</label>
+                        <input type="email" id="feedback-email" name="email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedback-type">Feedback About</label>
+                        <select id="feedback-type" name="feedback_type">
+                            <option value="explorer">Depth Explorer</option>
+                            <option value="education">Learning Content</option>
+                            <option value="action">Take Action</option>
+                            <option value="general">General Feedback</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedback-message">Your Thoughts</label>
+                        <textarea id="feedback-message" name="message" required placeholder="What currents should we follow?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedback-rating">Rating</label>
+                        <select id="feedback-rating" name="rating">
+                            <option value="5">★★★★★ - Deeply impressed</option>
+                            <option value="4">★★★★☆ - Making waves</option>
+                            <option value="3">★★★☆☆ - Floating along</option>
+                            <option value="2">★★☆☆☆ - Needs buoyancy</option>
+                            <option value="1">★☆☆☆☆ - Lost at sea</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn" name="form_type" value="submit_feedback">Send Feedback</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <footer id="community">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Beneath the Blue</h4>
+                    <p>Exploring and protecting the wonders below the surface through education and innovation.</p>
+                </div>
+                <div> </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <p><i class="fas fa-envelope"></i> Email: <a href="mailto:contact@beneaththeblue.org">contact@beneaththeblue.org</a></p>
+                    <p><i class="fas fa-phone"></i> Phone: +1 (800) OCE-DEEP</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Address: 456 Abyss Lane, Coastal City</p>
+                    
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} Beneath the Blue. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
+            </div>
+        </div>
+    </footer>
+</div>
+ <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script>
+<script src="{% static 'ocean/js/main.js' %}"></script>
+</body>
+</html>
+ 

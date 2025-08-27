@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="{% static 'photo/logo.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'css/sing_in_up.css' %}">
+<title>Beneath the Blue - Sign In</title>
+</head>
+<body>
+<!-- Background Video -->
+<video autoplay muted loop id="bg-video" playsinline>
+    <source src="{% static 'videos/sign-up-bg.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<!-- Floating Particles Effect -->
+<div class="particles" id="particles"></div>
+
+<!-- Main Container -->
+<div class="modal">
+    <div class="modal-content">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <h1>Beneath the Blue</h1>
+            <p>Dive into ocean conservation</p>
+        </div>
+
+        <!-- Sign In Form -->
+        <form method="POST" id="signInForm">
+            {% csrf_token %}
+            
+            <div class="modal-header">
+                <h3>Welcome Back</h3>
+                <p>Sign in to continue your ocean journey</p>
+                <a href="{% url 'home' %}" class="close-btn" title="Close">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div>
+
+            <div class="modal-body">
+                <!-- Error Messages -->
+                {% if error %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <!-- Success Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {% if message.tags == 'success' %}
+                                <i class="fas fa-check-circle"></i>
+                            {% elif message.tags == 'error' %}
+                                <i class="fas fa-exclamation-circle"></i>
+                            {% endif %}
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Email Field -->
+                <div class="modal-field">
+                    <label for="email">
+                        Email Address
+                    </label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="Enter your email address"
+                           value="{{ form.email.value|default:'' }}">
+                    <i class="fas fa-envelope" style="margin-top:.5em;"></i>
+                </div>
+
+                <!-- Password Field -->
+                <div class="modal-field">
+                    <label for="password">
+                        Password
+                    </label>
+                    <input type="password" id="password" name="password" required 
+                           placeholder="Enter your password">
+                    <i class="fas fa-eye-slash" id="togglePassword" style="cursor: pointer;margin-top:.5em;"></i>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="modal-content-btn">
+                    <button type="submit" id="submitBtn">
+                        <span class="btn-text">Sign In</span>
+                        <span class="btn-icon">
+                            <i class="fas fa-fish"></i>
+                        </span>
+                        <div class="loading" style="display: none;"></div>
+                    </button>
+
+                    {% comment %} <div class="form-footer">
+                        <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                    </div> {% endcomment %}
+                </div>
+
+                <!-- Sign Up Link -->
+                <a href="{% url 'sign_up' %}" class="signup-link">
+                    <i class="fas fa-user-plus"></i>
+                    Don't have an account? Sign Up
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript for enhanced functionality -->
+<script src="{% static 'js/sign-in.js' %}"></script>
+</body>
+</html>

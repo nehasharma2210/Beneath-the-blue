@@ -1,0 +1,214 @@
+{%  extends "base.html" %}
+{% load static %}
+
+{% block  content %}
+    <title>Ocean Explorer | Interactive Marine Discovery</title>
+     <link rel="stylesheet" href="{% static 'css/explore.css' %}"
+</head>
+<body>
+    <div class="image-bg-wrapper">
+        <img src="{% static 'image/explore_bg.jpg' %}" alt="Community Background">
+        <div class="image-overlay"></div>
+    </div>
+    <section class="hero">
+        <div class="hero-content" style="margin: 3% 0em;">
+            <h2>Discover the Wonders of Our Oceans</h2>
+            <p>Explore Earth's magnificent marine ecosystems through our interactive platform</p>
+        </div>
+    </section>
+
+    <div class="container" style="margin: 0em 3em;">
+        <!-- Interactive Ocean Explorer -->
+        <section class="ocean-explorer">
+            <div class="world-map-container">
+                <!-- <div class="world-map-overlay"></div> -->
+                <!-- World map with ocean highlights -->
+                <svg class="world-map" viewBox="0 0 2000 1000" xmlns="http://www.w3.org/2000/svg">
+                    <!-- World map background (continents) -->
+                    <image href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1200px-World_map_-_low_resolution.svg.png" width="2000" height="1000"/>
+                    <!-- Ocean highlight areas (initially hidden) -->
+                    <path id="pacific-highlight" class="ocean-highlight" d="M200,200 L1800,200 L1800,800 L200,800 Z" fill="rgba(62, 146, 204, 0.3)" stroke="var(--ocean-teal)" stroke-width="2" opacity="0"/>
+                    <path id="atlantic-highlight" class="ocean-highlight" d="M600,200 L1200,200 L1200,800 L600,800 Z" fill="rgba(62, 146, 204, 0.3)" stroke="var(--ocean-teal)" stroke-width="2" opacity="0"/>
+                    <path id="indian-highlight" class="ocean-highlight" d="M1200,400 L1800,400 L1800,800 L1200,800 Z" fill="rgba(62, 146, 204, 0.3)" stroke="var(--ocean-teal)" stroke-width="2" opacity="0"/>
+                    <path id="southern-highlight" class="ocean-highlight" d="M200,800 L1800,800 L1800,900 L200,900 Z" fill="rgba(62, 146, 204, 0.3)" stroke="var(--ocean-teal)" stroke-width="2" opacity="0"/>
+                    <path id="arctic-highlight" class="ocean-highlight" d="M200,100 L1800,100 L1800,200 L200,200 Z" fill="rgba(62, 146, 204, 0.3)" stroke="var(--ocean-teal)" stroke-width="2" opacity="0"/>
+                </svg>
+                
+                <!-- Ocean points -->
+                <div class="ocean-point" style="top: 50%; left: 15%;" data-ocean="Pacific"></div>
+                <div class="ocean-point" style="top: 45%; left: 40%;" data-ocean="Atlantic"></div>
+                <div class="ocean-point" style="top: 57%; left: 66%;" data-ocean="Indian"></div>
+                <div class="ocean-point" style="top: 65%; left: 50%;" data-ocean="Southern"></div>
+                <div class="ocean-point" style="top: 25%; left: 50%;" data-ocean="Arctic"></div>
+            </div>
+            
+            <div class="ocean-details">
+                <h2 id="ocean-name">Pacific Ocean</h2>
+                <div class="ocean-stats">
+                    <div class="stat">
+                        <i class="fas fa-ruler-combined"></i>
+                        <h4>Area</h4>
+                        <p id="area">165.2M km²</p>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-tint"></i>
+                        <h4>Avg Depth</h4>
+                        <p id="avg-depth">4,280m</p>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-arrow-down"></i>
+                        <h4>Max Depth</h4>
+                        <p id="max-depth">10,984m</p>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-fish"></i>
+                        <h4>Species</h4>
+                        <p id="species-count">50,000+</p>
+                    </div>
+                </div>
+                <p id="ocean-description">The Pacific Ocean is the largest and deepest of Earth's oceanic divisions. It extends from the Arctic Ocean in the north to the Southern Ocean in the south and is bounded by Asia and Australia in the west and the Americas in the east.</p>
+                <div class="marine-life">
+                    <h3><i class="fas fa-fish"></i> Iconic Species</h3>
+                    <div class="species-list" id="species-container">
+                        <span class="species-tag"><i class="fas fa-fish"></i> Humpback Whale</span>
+                        <span class="species-tag"><i class="fas fa-fish"></i> Great White Shark</span>
+                        <span class="species-tag"><i class="fas fa-fish"></i> Clownfish</span>
+                        <span class="species-tag"><i class="fas fa-fish"></i> Giant Pacific Octopus</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ocean Facts Section -->
+        <section class="ocean-facts">
+            <div class="facts-container">
+                <h2>Amazing Ocean Facts</h2>
+                <div class="fact-cards">
+                    <div class="fact-card">
+                        <i class="fas fa-water"></i>
+                        <h3>Water World</h3>
+                        <p>The oceans hold about 96.5% of all Earth's water. The remaining 3.5% is freshwater found in glaciers, ice caps, and groundwater.</p>
+                    </div>
+                    <div class="fact-card">
+                        <i class="fas fa-mountain"></i>
+                        <h3>Deepest Point</h3>
+                        <p>The Mariana Trench in the Pacific Ocean is the deepest part of the world's oceans, reaching about 11,034 meters (36,200 feet) deep.</p>
+                    </div>
+                    <div class="fact-card">
+                        <i class="fas fa-fish"></i>
+                        <h3>Biodiversity</h3>
+                        <p>Scientists estimate that there may be between 700,000 and 1 million species in the oceans, with about two-thirds still undescribed.</p>
+                    </div>
+                </div>
+            </div>
+        </section> 
+    </div>
+    <div>
+    <script>
+        // Ocean data
+        const oceans = {
+            Pacific: {
+                name: "Pacific Ocean",
+                area: "165.2M km²",
+                avgDepth: "4,280m",
+                maxDepth: "10,984m",
+                speciesCount: "50,000+",
+                description: "The Pacific Ocean is the largest and deepest of Earth's oceanic divisions. It extends from the Arctic Ocean in the north to the Southern Ocean in the south and is bounded by Asia and Australia in the west and the Americas in the east.",
+                species: ["Humpback Whale", "Great White Shark", "Clownfish", "Giant Pacific Octopus"]
+            },
+            Atlantic: {
+                name: "Atlantic Ocean",
+                area: "106.5M km²",
+                avgDepth: "3,646m",
+                maxDepth: "8,376m",
+                speciesCount: "50,000+",
+                description: "The Atlantic Ocean is the second-largest ocean, covering approximately 20% of the Earth's surface. It separates the 'Old World' from the 'New World' and is known for the Gulf Stream current that influences weather patterns.",
+                species: ["Bluefin Tuna", "Atlantic Puffin", "Manatee", "Portuguese Man o' War"]
+            },
+            Indian: {
+                name: "Indian Ocean",
+                area: "70.56M km²",
+                avgDepth: "3,741m",
+                maxDepth: "7,258m",
+                speciesCount: "50,000+",
+                description: "The Indian Ocean is the warmest ocean in the world, bounded by Africa, Asia, Australia, and the Southern Ocean. It's known for monsoon weather patterns and important trade routes since ancient times.",
+                species: ["Dugong", "Manta Ray", "Coconut Crab", "Coelacanth"]
+            },
+            Southern: {
+                name: "Southern Ocean",
+                area: "20.3M km²",
+                avgDepth: "3,270m",
+                maxDepth: "7,236m",
+                speciesCount: "10,000+",
+                description: "The Southern Ocean, also known as the Antarctic Ocean, encircles Antarctica and is the newest recognized ocean. It's characterized by strong currents and extreme weather conditions.",
+                species: ["Emperor Penguin", "Krill", "Leopard Seal", "Colossal Squid"]
+            },
+            Arctic: {
+                name: "Arctic Ocean",
+                area: "14.06M km²",
+                avgDepth: "1,205m",
+                maxDepth: "5,550m",
+                speciesCount: "5,000+",
+                description: "The Arctic Ocean is the smallest and shallowest of the world's oceans, centered around the North Pole. It's mostly covered by sea ice and is home to unique cold-adapted species.",
+                species: ["Polar Bear", "Narwhal", "Beluga Whale", "Arctic Cod"]
+            }
+        };
+
+        // Make ocean points interactive
+        document.querySelectorAll('.ocean-point').forEach(point => {
+            point.addEventListener('click', function() {
+                const oceanName = this.dataset.ocean;
+                updateOceanDisplay(oceanName);
+                
+                // Add visual feedback
+                this.style.transform = 'translate(-50%, -50%) scale(1.8)';
+                this.style.background = 'var(--rust)';
+                setTimeout(() => {
+                    this.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                }, 300);
+            });
+        });
+
+        // Update ocean information display
+       // Update ocean information display
+function updateOceanDisplay(oceanName) {
+    const ocean = oceans[oceanName];
+    
+    // Hide all highlights first
+    document.querySelectorAll('.ocean-highlight').forEach(highlight => {
+        highlight.style.opacity = '0';
+    });
+    
+    // Show the selected ocean highlight
+    const highlight = document.getElementById(`${oceanName.toLowerCase()}-highlight`);
+    if (highlight) {
+        highlight.style.opacity = '1';
+    }
+    
+    // Update the rest of the information
+    document.getElementById('ocean-name').textContent = ocean.name;
+    document.getElementById('area').textContent = ocean.area;
+    document.getElementById('avg-depth').textContent = ocean.avgDepth;
+    document.getElementById('max-depth').textContent = ocean.maxDepth;
+    document.getElementById('species-count').textContent = ocean.speciesCount;
+    document.getElementById('ocean-description').textContent = ocean.description;
+    
+    const speciesContainer = document.getElementById('species-container');
+    speciesContainer.innerHTML = '';
+    ocean.species.forEach(species => {
+        const tag = document.createElement('span');
+        tag.className = 'species-tag';
+        tag.innerHTML = `<i class="fas fa-fish"></i> ${species}`;
+        speciesContainer.appendChild(tag);
+    });
+    
+    // Add animation effect
+    const oceanDetails = document.querySelector('.ocean-details');
+    oceanDetails.style.animation = 'none';
+    void oceanDetails.offsetWidth; // Trigger reflow
+    oceanDetails.style.animation = 'fadeInUp 0.5s ease';
+}
+        updateOceanDisplay('Pacific');
+    </script>
+{% comment %} </body> {% endcomment %}
+        {% endblock %} 

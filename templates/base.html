@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="{% static 'photo/logo.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Optimized Google Fonts import -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Spectral+SC:wght@400;600;700&family=Sansita:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+     <!-- Header -->
+     <header class="header">
+    <div class="container header-container">
+        <div class="logo">
+            <h1><a href="{% url 'home' %}">Beneath the Blue</a></h1>
+        </div>
+        <nav>
+            <ul class="main-nav">
+                <li class="menu-container">
+                    <div class="main_box">
+                        <input type="checkbox" id="check" />
+                        <label class="menu-icon" for="check">
+                            <i class="fa-solid fa-bars"></i>
+                        </label>
+
+                        <div class="sidebar_menu">
+                            <div class="menu-header">
+                                <label class="close-icon" for="check">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </label>
+                            </div>
+
+                            <div class="menu">
+                                <ul>
+                                    <li><a href="{% url 'community_posts' %}">Posts</a></li>
+                                    <li><a href="{% url 'explore_map' %}">Explore</a></li>
+                                    <li><a href="{% url 'threats' %}">Threats</a></li>
+                                    <li><a href="{% url 'endangered_species' %}">Species</a></li>
+                                    <li><a href="{% url 'community_page' %}">Community</a></li>
+                                    <li><a href="{% url 'quiz' %}">Quiz</a></li>
+                                    {% if user.is_authenticated %}
+                                        <li>
+                                            <form action="{% url 'user_logout' %}" method="post" class="logout-form">
+                                                {% csrf_token %}
+                                                <button type="submit" class="logout-btn">
+                                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                                </button>
+                                            </form>
+                                        </li>
+                                    {% else %}
+                                        <li><a href="{% url 'sign_in' %}">Sign In</a></li>
+                                        <li><a href="{% url 'sign_up' %}">Sign Up</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+    {% block content %}{% endblock %}
+    
+    <footer class="community" style="margin-top: 1em;">
+        <div style="text-align: center;">
+            <p>&copy; 2025 Beneath The Blue. All rights reserved.</p>
+            <p>Dedicated to protect marine life for future generations.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            // Toggle menu
+            hamburger.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+
+            // Close menu when clicking a link
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!navMenu.contains(event.target) && !hamburger.contains(event.target)) {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+
+            // Handle scroll
+            let lastScroll = 0;
+            const header = document.querySelector('.header');
+            
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll <= 0) {
+                    header.classList.remove('scroll-up');
+                    return;
+                }
+                
+                if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
+                    // Scrolling down
+                    header.classList.remove('scroll-up');
+                    header.classList.add('scroll-down');
+                } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
+                    // Scrolling up
+                    header.classList.remove('scroll-down');
+                    header.classList.add('scroll-up');
+                }
+                lastScroll = currentScroll;
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

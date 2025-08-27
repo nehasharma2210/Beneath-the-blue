@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <title>Ocean Conservation Community | Create Post</title>
+    <link rel="stylesheet" href="{% static 'css/posts.css' %}">
+
+    <div class="image-bg-wrapper">
+        <img src="{% static 'image/post_bg.jpg' %}" alt="Community Background">
+        <div class="image-overlay"></div>
+    </div>
+    <main>
+        <div class="container">
+            <h1 class="page-title">Ocean Conservation Community</h1>
+            
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <a href="{% url 'community_posts' %}" class="tab">Community Posts</a>
+                <a href="{% url 'create_post' %}" class="tab active">Create Post</a>
+                <a href="{% url 'my_posts' %}" class="tab">My Posts</a>
+            </div>
+            
+            <div class="tab-content active">
+                <div class="post-form">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_title">Title of Your Conservation Effort</label>
+                            {{ form.title }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_content">Share Your Story</label>
+                            {{ form.content }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_location">Location</label>
+                            {{ form.location }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_tags">Tags (separate with commas)</label>
+                            {{ form.tags }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Add Photos/Videos</label>
+                            <div class="file-upload" id="mediaUpload">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Click to upload or drag and drop</span>
+                                <input type="file" name="media" id="postMedia" multiple accept="image/*,video/*">
+                            </div>
+                            <div class="preview-container" id="mediaPreview"></div>
+                        </div>
+                        <button type="submit" class="submit-btn">Share Your Story</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/create_post.js' %}"></script>
+{% endblock %}
