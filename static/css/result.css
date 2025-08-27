@@ -1,0 +1,147 @@
+/* Result Page Styles */
+body {
+    margin: 0;
+    padding: 0;
+    color: #2d3748;
+    /* line-height: 1.6; */
+    overflow-x: hidden;
+}
+.p{
+    color: #005f73;
+}
+.result-summary {
+    background: rgba(224, 247, 250, 0.85);
+    padding: 2rem;
+    border-radius: 1rem;
+    margin: 1.5rem 0;
+    border-left: 0.3125rem solid #0077b6;
+    box-shadow: 0 0.25rem 1.125rem rgba(0,0,0,0.10);
+}
+
+.result-score {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.score-text {
+    color: #005f73;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.score-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.correct-score {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #00a8cc;
+    line-height: 1;
+}
+
+.score-separator {
+    font-size: 2rem;
+    color: #0077b6;
+    font-weight: 600;
+}
+
+.total-score {
+    font-size: 2rem;
+    color: #0077b6;
+    font-weight: 600;
+}
+
+.score-percentage {
+    color: #023e8a;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.result-details {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.detail-card {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 0.8rem;
+    text-align: center;
+    box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.08);
+}
+
+.detail-card h3 {
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.detail-card p {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    color: white;
+}
+
+.correct-card {
+    background: linear-gradient(135deg, #00a8cc 0%, #0077b6 100%);
+    border-left: 0.25rem solid #94d2bd;
+}
+
+.incorrect-card {
+    background: linear-gradient(135deg, #ff7e67 0%, #ca6702 100%);
+    border-left: 0.25rem solid #ee9b00;
+}
+
+.result-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.result-actions .submit-btn,
+.result-actions .summary-btn {
+    flex: 1;
+    text-align: center;
+}
+
+.result-actions .summary-btn {
+    background: linear-gradient(90deg, #008891 0%, #005f73 100%);
+}
+
+.result-actions .summary-btn:hover {
+    background: linear-gradient(90deg, #005f73 0%, #008891 100%);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .result-details {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .score-display {
+        gap: 0.3rem;
+    }
+    
+    .correct-score {
+        font-size: 2.5rem;
+    }
+    
+    .total-score {
+        font-size: 1.8rem;
+    }
+    
+    .result-actions {
+        flex-direction: column;
+    }
+}
