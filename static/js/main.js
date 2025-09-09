@@ -1,6 +1,6 @@
-// ocean/static/ocean/js/main.js
+// Main JavaScript for Beneath the Blue
 
-// Tab functionality
+// Tab functionality for homepage forms
 function setupTabs() {
     const tabButtons = document.querySelectorAll('.tab-button');
     
@@ -22,6 +22,7 @@ function setupTabs() {
             const content = document.getElementById(tabId);
             if (content) {
                 content.classList.add('active');
+                console.log('Switched to tab:', tabId);
             } else {
                 console.error('No content found for tab:', tabId);
             }
@@ -91,7 +92,59 @@ function setupFormHandlers() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             const url = this.dataset.submitUrl;
-            // ... rest of your form handling code
+            const formData = new FormData(this);
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.disabled = true;
+            
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    this.innerHTML = `<div class="success-message"><i class="fas fa-check-circle"></i> ${data.message}</div>`;
+                    // Reset form after 3 seconds
+                    setTimeout(() => {
+                        this.reset();
+                        this.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }, 3000);
+                } else {
+                    // Show error messages
+                    let errorHtml = '<div class="error-messages">';
+                    for (const [field, errors] of Object.entries(data.errors)) {
+                        errorHtml += `<div class="error"><strong>${field}:</strong> ${errors.join(', ')}</div>`;
+                    }
+                    errorHtml += '</div>';
+                    
+                    // Insert errors at top of form
+                    this.insertAdjacentHTML('afterbegin', errorHtml);
+                    
+                    // Remove error messages after 5 seconds
+                    setTimeout(() => {
+                        const errorDiv = this.querySelector('.error-messages');
+                        if (errorDiv) errorDiv.remove();
+                    }, 5000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
         });
     });
 }
@@ -103,27 +156,48 @@ document.addEventListener('DOMContentLoaded', function() {
     setupVideoAutoplay();
     setupNavbarScroll();
     setupFormHandlers();
+    setupLikeButtons();
 });
 
-document.querySelectorAll('.like-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const postId = this.dataset.postId;
-        fetch(`/like-post/${postId}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json'
-            },
-            credentials: 'same-origin'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.liked) {
-                this.classList.add('liked');
-            } else {
-                this.classList.remove('liked');
-            }
-            this.querySelector('.like-count').textContent = data.total_likes;
+// Like button functionality - runs after DOM is loaded
+function setupLikeButtons() {
+    document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const postId = this.dataset.postId;
+            
+            console.log('Like button clicked for post:', postId); // Debug log
+            
+            fetch(`/posts/${postId}/like/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                console.log('Response status:', response.status); // Debug log
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data); // Debug log
+                const icon = this.querySelector('i');
+                const countSpan = this.querySelector('.like-count');
+                
+                if (data.liked) {
+                    icon.className = 'fas fa-thumbs-up liked';
+                    this.style.color = '#e74c3c';
+                } else {
+                    icon.className = 'far fa-thumbs-up';
+                    this.style.color = '';
+                }
+                countSpan.textContent = data.total_likes;
+            })
+            .catch(error => {
+                console.error('Like error:', error);
+                alert('Error liking post. Please try again.');
+            });
         });
     });
-});
+}

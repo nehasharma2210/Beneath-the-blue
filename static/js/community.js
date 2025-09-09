@@ -1,47 +1,110 @@
 // Handle like button clicks
 document.querySelectorAll('.like-btn').forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
         const postId = this.getAttribute('data-post-id');
+        const icon = this.querySelector('i');
         const likeCount = this.querySelector('.like-count');
-        
-        fetch(`/like_post/${postId}/`, {
+
+        fetch(`/posts/${postId}/like/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': getCookie('csrftoken'),
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
             credentials: 'same-origin',
         })
         .then(response => response.json())
         .then(data => {
             if (data.liked) {
-                this.innerHTML = '<i class="fas fa-thumbs-up"></i> ' + data.total_likes + ' Likes';
+                icon.className = 'fas fa-thumbs-up liked';
+                this.style.color = '#e74c3c';
             } else {
-                this.innerHTML = '<i class="far fa-thumbs-up"></i> ' + data.total_likes + ' Likes';
+                icon.className = 'far fa-thumbs-up';
+                this.style.color = '';
             }
+            likeCount.textContent = data.total_likes;
+        })
+        .catch(error => {
+            console.error('Like error:', error);
+            alert('Error liking post. Please try again.');
         });
     });
 });
 
 // Handle comment form submission
 document.querySelectorAll('.comment-form').forEach(form => {
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         const formData = new FormData(this);
-        
-        fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-            },
-            credentials: 'same-origin',
-        })
-        .then(response => {
-            if (response.ok) {
-                location.reload();
-            }
-        });
+        const commentInput = this.querySelector('input[name="content"]');
+        const commentsSection = this.closest('.comments-section');
+
+        // Disable submit button and show feedback
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Posting...';
+
+        try {
+            const res = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                credentials: 'same-origin'
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to post');
+
+            // Clear input
+            commentInput.value = '';
+
+            // Build new comment DOM
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+            commentDiv.innerHTML = `
+                <div class="comment-author">${data.comment.author.charAt(0).toUpperCase()}</div>
+                <div class="comment-content">
+                    <strong>${data.comment.author}</strong>
+                    <p>${data.comment.content}</p>
+                    <small>just now</small>
+                </div>
+            `;
+
+            // Insert new comment ABOVE the form (newest first)
+            commentsSection.insertBefore(commentDiv, this);
+        } catch (err) {
+            console.error('Comment error:', err);
+            alert('Error posting comment. Please try again.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    });
+});
+
+// Handle comment button toggle
+document.querySelectorAll('.comment-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const postCard = this.closest('.post-card');
+        const commentsSection = postCard.querySelector('.comments-section');
+
+        // Toggle visibility
+        if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+            commentsSection.style.display = 'block';
+            this.style.color = '#3498db';
+        } else {
+            commentsSection.style.display = 'none';
+            this.style.color = '';
+        }
+    });
+});
+
+// Initialize comment sections as hidden on page load
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.comments-section').forEach(section => {
+        section.style.display = 'none';
     });
 });
 

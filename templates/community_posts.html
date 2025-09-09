@@ -40,7 +40,7 @@
                         
                         <div class="post-content">
                             <div class="post-header">
-                                <div class="post-author">{{ post.author.username|first }}</div>
+                                <div class="post-author">{{ post.author.username|upper|slice:":1" }}</div>
                                 <div class="post-info">
                                     <h3>{{ post.title }}</h3>
                                     <p>Posted by {{ post.author.username }} • {{ post.created_at|timesince }} ago</p>
@@ -63,8 +63,12 @@
                             {% endif %}
                             
                             <div class="post-actions">
-                                <div class="action-btn like-btn">
-                                    <i class="far fa-thumbs-up"></i> 
+                                <div class="action-btn like-btn" data-post-id="{{ post.id }}">
+                                    {% if user in post.likes.all %}
+                                        <i class="fas fa-thumbs-up liked"></i>
+                                    {% else %}
+                                        <i class="far fa-thumbs-up"></i>
+                                    {% endif %}
                                     <span class="like-count">{{ post.likes.count }}</span> Likes
                                 </div>
                                 <div class="action-btn comment-btn">
@@ -80,16 +84,21 @@
                                     <button type="submit">Post</button>
                                 </form>
                                 
-                                {% comment %} {% for comment in post.comments.all %}
+                                <!-- Display existing comments -->
+                                {% for comment in post.comments.all %}
                                 <div class="comment">
-                                    <div class="comment-author">{{ comments }}</div>
+                                    {% comment %} <div class="comment-author">{{ comment.author.username|upper|slice:":1" }}</div> {% endcomment %}
                                     <div class="comment-content">
                                         <strong>{{ comment.author.username }}</strong>
-                                        <p>{{ comment.content }}</p>
+                                        <p style="color: #000;">{{ comment.content }}</p>
                                         <small>{{ comment.created_at|timesince }} ago</small>
                                     </div>
                                 </div>
-                                {% endfor %} {% endcomment %}
+                                {% empty %}
+                                <div class="no-comments">
+                                    <p style="color: #888; font-style: italic;">No comments yet. Be the first to comment!</p>
+                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

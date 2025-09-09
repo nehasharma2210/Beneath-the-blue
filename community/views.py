@@ -61,13 +61,30 @@ def quiz(request):
 
 def next_question(request):
     if request.method == 'POST':
-        # Process answer if submitted
-        # You'll need to add this logic
-        
-        # Get next question
+        # Process the submitted answer
         current_index = request.session.get('current_question_index', 0)
         question_ids = request.session.get('shuffled_questions', [])
+        score = request.session.get('score', 0)
         
+        # Check if an answer was submitted
+        if current_index < len(question_ids):
+            current_question_id = question_ids[current_index]
+            current_question = Question.objects.get(id=current_question_id)
+            
+            # Get the selected answer ID from the form
+            selected_answer_id = request.POST.get('answer')
+            
+            if selected_answer_id:
+                try:
+                    selected_answer = Answer.objects.get(id=selected_answer_id)
+                    # Check if the selected answer is correct
+                    if selected_answer.is_correct:
+                        score += 1
+                        request.session['score'] = score
+                except Answer.DoesNotExist:
+                    pass  # Invalid answer ID, don't increment score
+        
+        # Move to next question or show results
         if current_index + 1 < len(question_ids):
             next_question = Question.objects.get(id=question_ids[current_index + 1])
             request.session['current_question_index'] = current_index + 1
@@ -75,13 +92,22 @@ def next_question(request):
                 'question': next_question
             })
         else:
-            # Quiz completed
-            score = request.session.get('score', 0)
-            x= random.randint(1, 5)
+            # Quiz completed - show actual results
+            total_questions = len(question_ids)
+            correct_answers = score
+            wrong_answers = total_questions - correct_answers
+            percentage = round((correct_answers / total_questions) * 100) if total_questions > 0 else 0
+            
+            # Clear session data
+            request.session.pop('shuffled_questions', None)
+            request.session.pop('current_question_index', None) 
+            request.session.pop('score', None)
+            
             return render(request, 'result.html', {
-                'score':   x,
-                'total': len(question_ids),
-                'wrong':10-x,
+                'score': correct_answers,
+                'total': total_questions,
+                'wrong': wrong_answers,
+                'percentage': percentage
             })
     
     return redirect('quiz')
@@ -226,56 +252,70 @@ def delete_media(request, media_id):
 def add_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-            return redirect('community_posts')
-    return redirect('community_posts')
+        content = request.POST.get('content', '').strip()
+        if content:
+            comment = Comment.objects.create(
+                post=post,
+                author=request.user,
+                content=content
+            )
+            return JsonResponse({
+                'success': True,
+                'comment': {
+                    'id': comment.id,
+                    'content': comment.content,
+                    'author': comment.author.username,
+                    'created_at': comment.created_at.strftime('%B %d, %Y at %I:%M %p')
+                }
+            })
+        else:
+            return JsonResponse({'success': False, 'error': 'Comment cannot be empty'}, status=400)
+    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
 
-@login_required(login_url='/sign_in/')
 def submit_pledge(request):
-    form = PledgeForm(request.POST)
-    if form.is_valid():
-        pledge = form.save()
+    if request.method == 'POST':
+        form = PledgeForm(request.POST)
+        if form.is_valid():
+            pledge = form.save()
+            return JsonResponse({
+                'success': True,
+                'message': 'Thank you for taking the pledge! Together we can protect our oceans!'
+            })
         return JsonResponse({
-            'success': True,
-            'message': 'Pledge submitted successfully!'
-        })
-    return JsonResponse({
-        'success': False,
-        'errors': form.errors
-    }, status=400)
+            'success': False,
+            'errors': form.errors
+        }, status=400)
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=405)
 
-@login_required(login_url='/sign_in/')
 def submit_idea(request):
-    form = IdeaForm(request.POST)
-    if form.is_valid():
-        idea = form.save()
+    if request.method == 'POST':
+        form = IdeaForm(request.POST)
+        if form.is_valid():
+            idea = form.save()
+            return JsonResponse({
+                'success': True,
+                'message': 'Your innovative idea has been submitted! We appreciate your contribution to ocean conservation!'
+            })
         return JsonResponse({
-            'success': True,
-            'message': 'Idea submitted successfully!'
-        })
-    return JsonResponse({
-        'success': False,
-        'errors': form.errors
-    }, status=400)
+            'success': False,
+            'errors': form.errors
+        }, status=400)
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=405)
 
-@login_required(login_url='/sign_in/')
 def submit_feedback(request):
-    form = FeedbackForm(request.POST)
-    if form.is_valid():
-        feedback = form.save()
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save()
+            return JsonResponse({
+                'success': True,
+                'message': 'Thank you for your valuable feedback! Your input helps us improve Beneath the Blue!'
+            })
         return JsonResponse({
-            'success': True,
-            'message': 'Feedback submitted successfully!'
-        })
-    return JsonResponse({
-        'success': False,
-        'errors': form.errors
-    }, status=400) 
+            'success': False,
+            'errors': form.errors
+        }, status=400)
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=405)
 
 def endangered_species(request):
     animals = EndangeredSpecies.objects.all()
