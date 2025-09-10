@@ -1,0 +1,198 @@
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sansita:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Spectral+SC:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #0099cc;
+    --secondary-color: #CCFFFF;
+    --text-color: rgba(255, 255, 255, 0.85);
+    --text-light: rgba(255, 255, 255, 0.65);
+    --bg-dark: rgba(0, 0, 0, 0.8);
+    --bg-accent: rgba(0, 0, 255, 0.25);
+    --border-light: rgba(255, 255, 255, 0.2);
+}
+
+/* Main body styles */
+body {
+    color:var(--pearl) ;
+    background-color: #000814;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #000814;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 153, 204, 0.6);
+    border-radius: 10px;
+}
+
+/* Typography */
+h1, h2, h3, h4,
+.logo h1,
+.community_heading {
+    font-weight: 700;
+    color: white;
+}
+
+/* Layout components */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.main_community {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em 0;
+    margin: 2rem 5%;
+}
+
+/* Button styles */
+#back_button, .secondary-btn {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    background-color: var(--bg-accent);
+    line-height: 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#back_button:hover, .secondary-btn:hover {
+    background-color: rgba(0, 0, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Search bar styles */
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+.search-bar select {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    background:linear-gradient(159deg, rgba(0,88,122,0.9) 0%, rgba(0,168,204,0.9) 100%);
+    color: white;
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+.search-bar select option {
+    background-color: black;
+}
+
+/* Section styles */
+.section {
+    color: var(--text-light);
+    padding: 0.85rem;
+    margin: 1.5rem;
+}
+.section h2 {
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--primary-color);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Card styles */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin: 1.5rem 5%;
+    padding: 1.5rem;
+    line-height: 1.5;
+    background:  rgba(0, 168, 204, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+.card-container:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+.card {
+    color: #CCFFFF;
+    margin-bottom: 1rem;
+}
+.card h3, .card h4 {
+    color: var(--coral);
+}
+.card_paragraph {
+    color: rgba(255, 255, 255, 0.65);
+}
+.card_paragraph a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+.card_paragraph a:hover{
+    color: #fff;
+}
+.card a {
+    text-decoration: none;
+    color: var(--heading-p);
+    font-weight: bold;
+}
+.card a:hover {
+    text-decoration: underline;
+    color:  var( --sea-foam);
+}
+
+/* Background image wrapper */
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    /* .header-container, .main_community {
+        flex-direction: column;
+        align-items: flex-start;
+    } */
+    .search-bar {
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .search-bar select {
+        flex-grow: 1;
+    }
+    .card-container {
+        margin: 1rem 5%;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #back_button, .secondary-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    .section h2 {
+        font-size: 1.2rem;
+    }
+}

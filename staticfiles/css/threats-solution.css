@@ -1,0 +1,139 @@
+a{
+  text-decoration: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    min-height: 100vh;
+    color: white;
+}
+
+.hero {
+            height: calc(100vh - 80px); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 3em;
+            
+        }
+
+.hero h1 {
+    font-size: 3rem;
+    margin: 0;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+ .hero-content {
+            max-width: 75em;
+            margin: 0 auto;
+        }
+
+/* Threats & Solutions Grid */
+.threats, .solutions {
+    padding: 3rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.threats h2, .solutions h2 {
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.threats-grid, .solutions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.threat-card, .solution-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    backdrop-filter: blur(15px);
+    background:linear-gradient(159deg, rgba(0,88,122,0.9) 0%, rgba(0,168,204,0.9) 100%);
+}
+
+.threat-card:hover, .solution-card:hover {
+    transform: translateY(-10px);
+}
+
+.threat-card img, .solution-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.threat-card h3, .solution-card h3 {
+    padding: 1rem;
+    margin: 0;
+    color:var(--coral);
+}
+
+.threat-card a p, .solution-card p {
+    padding: 0 1rem 1rem;
+    margin: 0;
+    color: #fff;
+    text-decoration: none;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero {
+    height: 60vh;
+    padding: 4rem 1rem;
+  }
+  
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  
+  .hero p {
+    font-size: 1.2rem;
+  }
+  
+  .main-nav,
+  .nav-actions {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .threats-grid, .solutions-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+  }
+  .threat-card, .solution-card {
+    font-size: 0.95em;
+  }
+}
+@media (max-width: 600px) {
+  .threats-grid, .solutions-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5em;
+  }
+  .threat-card, .solution-card {
+    font-size: 0.9em;
+    padding: 0.5em;
+  }
+  .threat-card img, .solution-card img {
+    height: 120px;
+  }
+  .hero h1 {
+    font-size: 1.2em;
+  }
+  .hero p {
+    font-size: 1em;
+  }
+}

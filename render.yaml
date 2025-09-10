@@ -3,18 +3,19 @@ services:
     name: beneath-the-blue
     env: python
     runtime: python-3.11
-    buildCommand: pip install -r requirements.txt
-    startCommand: python manage.py collectstatic --noinput && gunicorn beneath.wsgi:application --bind 0.0.0.0:8000
+    buildCommand: pip install -r requirements.txt && python manage.py migrate
+    startCommand: python manage.py collectstatic --noinput && gunicorn Beneath_the_blue.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: beneath.settings
+        value: Beneath_the_blue.settings
       - key: PYTHON_VERSION
         value: 3.11.9
       - key: SECRET_KEY
-        value: your-secret-key-here
+        generateValue: true
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: your-render-domain.onrender.com
-      # Add any other env vars like DATABASE_URL, AWS creds, etc.
+        value: "beneath-the-blue.onrender.com"
+      - key: DJANGO_LOG_LEVEL
+        value: INFO
       
