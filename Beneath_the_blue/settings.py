@@ -15,7 +15,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-e#!jdlgt%pp+2jxd+l-x6
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 # Update allowed hosts for production
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',') if os.environ.get('ALLOWED_HOSTS') != '*' else ['*']
 
 
 # Application definition
