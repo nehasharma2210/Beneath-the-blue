@@ -114,13 +114,6 @@ USE_TZ = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Production media file handling
-if not DEBUG:
-    # In production, serve media files through static file handling
-    STATICFILES_DIRS.append(('media', MEDIA_ROOT))
-    # Configure Whitenoise to handle media files
-    WHITENOISE_USE_FINDERS = True
-    WHITENOISE_AUTOREFRESH = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -130,6 +123,14 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",  # Directory for static files
 ]
+
+# Production media file handling
+if not DEBUG:
+    # In production, serve media files through static file handling
+    STATICFILES_DIRS.append(('media', MEDIA_ROOT))
+    # Configure Whitenoise to handle media files
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_AUTOREFRESH = True
 
 # Static files storage for Whitenoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
