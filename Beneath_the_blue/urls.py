@@ -42,5 +42,16 @@ urlpatterns = [
     path('media/<int:media_id>/delete/', delete_media, name='delete_media'),
     path('add_comment/<int:post_id>/', add_comment, name='add_comment'),
     ]
+# Serve media files in both development and production
+from django.views.static import serve
+from django.urls import re_path
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # In production, serve media files through Django
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    ]
