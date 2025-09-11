@@ -121,7 +121,7 @@
             <div class="feature-text">
                 <h4>Deep Sea Explorer</h4>
                 <p>Navigate through marine ecosystems from sunlit surfaces to the mysterious midnight zone.</p>
-                <a href="#" class="btn">Begin Exploration</a>
+                <a href="{% url 'explore_map' %}" class="btn">Begin Exploration</a>
             </div>
             <div class="feature-image">
                 <img src="{% static 'image/deep.avif' %}" 
@@ -138,7 +138,7 @@
             <div class="feature-text">
                 <h4>Threats Below Surface</h4>
                 <p>See how pollution is destroying marine ecosystems worldwide.</p>
-                <a href="{% url 'explore_map' %}" class="btn">View Threats</a>
+                <a href="{% url 'threats' %}" class="btn">View Threats</a>
             </div>
         </div>
         
@@ -147,7 +147,7 @@
             <div class="feature-text">
                 <h4>Hope From the Deep</h4>
                 <p>Discover innovative solutions restoring our oceans.</p>
-                <a href="#" class="btn">Learn Solutions</a>
+                <a href="{% url 'community_page' %}" class="btn">Learn Solutions</a>
             </div>
             <div class="feature-image">
                  <img src="{% static 'image/solutions.jpg' %}" 
