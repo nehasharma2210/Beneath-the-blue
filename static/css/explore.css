@@ -84,6 +84,8 @@
             flex: 1;
             position: relative;
             background: url('https://www.nationsonline.org/maps/World-Map-with-countries.jpg') center/cover no-repeat;
+            min-height: 600px; /* Ensure minimum height for all sizes */
+            width: 100%;
         }
 
         .world-map-overlay {
@@ -408,6 +410,10 @@
     position: absolute;
     top: 0;
     left: 0;
+    object-fit: cover;
+    /* Ensure SVG scales properly on all devices */
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .ocean-highlight {
@@ -418,6 +424,12 @@
 .world-map-container {
     position: relative;
     overflow: hidden;
+    /* Ensure consistent aspect ratio across devices */
+    background-attachment: local;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .world-map-overlay {
@@ -430,19 +442,43 @@
     pointer-events: none;
 }
 
-/* Responsive Design */
+/* Responsive Design - Enhanced for better map visibility */
+
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+    .ocean-explorer {
+        margin: 2rem 0;
+    }
+    
+    .world-map-container {
+        min-height: 500px;
+    }
+    
+    .ocean-details {
+        width: 350px;
+        padding: 2rem;
+    }
+}
+
+/* Standard tablets */
 @media (max-width: 1024px) {
     .ocean-explorer {
         flex-direction: column;
         min-height: auto;
+        margin: 1rem 0;
     }
     
     .world-map-container {
-        height: 100%;
+        min-height: 450px;
+        height: 450px;
+        width: 100%;
+        order: 1; /* Ensure map appears first on mobile */
     }
     
     .ocean-details {
         width: 100%;
+        order: 2;
+        min-height: auto;
     }
     
     .hero {
@@ -454,20 +490,21 @@
     }
 }
 
+/* Mobile tablets */
 @media (max-width: 768px) {
-    /* .header-content {
-        flex-direction: column;
-        gap: 15px;
+    .container {
+        margin: 0 1rem;
     }
     
-    nav ul {
-        justify-content: center;
-        flex-wrap: wrap;
-    } */
+    .ocean-explorer {
+        border-radius: 10px;
+    }
     
     .world-map-container {
-        min-height: 400px;
-        height: 400px;
+        min-height: 350px;
+        height: 350px;
+        background-size: cover;
+        background-position: center;
     }
     
     .hero {
@@ -496,15 +533,29 @@
     }
 }
 
+/* Small mobile screens */
 @media (max-width: 480px) {
+    .container {
+        margin: 0 0.5rem;
+    }
+    
     .world-map-container {
-        min-height: 300px;
-        height: 300px;
+        min-height: 280px;
+        height: 280px;
+        background-size: cover;
+        background-position: center;
     }
     
     .ocean-point {
-        width: 15px;
-        height: 15px;
+        width: 12px;
+        height: 12px;
+        border-width: 2px;
+    }
+    
+    .ocean-point::after {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+        top: -35px;
     }
     
     .hero {
@@ -521,5 +572,39 @@
     
     .fact-cards {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Extra small mobile screens */
+@media (max-width: 360px) {
+    .world-map-container {
+        min-height: 250px;
+        height: 250px;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+    .ocean-point {
+        width: 10px;
+        height: 10px;
+        border-width: 1px;
+    }
+    
+    .ocean-point::after {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        top: -30px;
+    }
+    
+    .ocean-details {
+        padding: 1.5rem;
+    }
+    
+    .hero-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
     }
 }
