@@ -1,0 +1,459 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+        /* Reusing your existing CSS variables */
+        :root {
+            --deep-abyss: #00587a;
+            --ocean-depths: #008891;
+            --marine-teal: #00a8cc;
+            --sea-foam: #fff;
+            --golden-sunlight: #ffb347;
+            --pearl: #f8f9fa;
+            --midnight-wave: #0f3057;
+            --card_bg: linear-gradient(159deg, rgba(0,88,122,0.9) 0%, rgba(0,168,204,0.9) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            color: var(--pearl);
+            line-height: 1.7;
+            background-color: var(--midnight-wave);
+            font-family: 'Sansita', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Video Background */
+        #fullpage-video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        #video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 47, 87, 0.7);
+            z-index: -1;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 50px;
+        }
+
+        /* About Header */
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-header h1 {
+            font-size: 2.8rem;
+            color: var(--sea-foam);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--pearl);
+        }
+
+        /* Mission Section */
+        .mission-section {
+            background: var(--card_bg);
+            backdrop-filter: blur(8px);
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(167, 236, 238, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .mission-section h2 {
+            color: var(--sea-foam);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .mission-section p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        /* Team Section */
+        .team-section {
+            margin-bottom: 50px;
+        }
+
+        .team-section h2 {
+            text-align: center;
+            color: var(--sea-foam);
+            margin-bottom: 40px;
+            font-size: 2rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .team-member {
+            background: var(--card_bg);
+            backdrop-filter: blur(8px);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(167, 236, 238, 0.2);
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .member-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px;
+            border: 3px solid var(--sea-foam);
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-name {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--sea-foam);
+            margin-bottom: 8px;
+        }
+
+        .member-role {
+            color: var(--golden-sunlight);
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .member-bio {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--pearl);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--sea-foam);
+            color: var(--deep-abyss);
+            transform: translateY(-3px);
+        }
+
+        /* Values Section */
+        .values-section {
+            margin-bottom: 50px;
+        }
+
+        .values-section h2 {
+            text-align: center;
+            color: var(--sea-foam);
+            margin-bottom: 40px;
+            font-size: 2rem;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .value-card {
+            background: var(--card_bg);
+            backdrop-filter: blur(8px);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(167, 236, 238, 0.2);
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .value-icon {
+            font-size: 2rem;
+            color: var(--sea-foam);
+            margin-bottom: 15px;
+        }
+
+        .value-title {
+            font-weight: 700;
+            color: var(--sea-foam);
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 40px;
+            background: var(--card_bg);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            border: 1px solid rgba(167, 236, 238, 0.2);
+        }
+
+        .cta-section h2 {
+            color: var(--sea-foam);
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            margin-bottom: 25px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: linear-gradient(159deg, rgba(0,88,122,0.9) 0%, rgba(0,168,204,0.9) 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0, 168, 204, 0.3);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 168, 204, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .mission-section {
+                padding: 25px;
+            }
+            
+            .team-grid, .values-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-wrapper {
+                padding: 80px 15px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Full Page Video Background -->
+    <video id="fullpage-video-bg" autoplay muted loop>
+        <source src="{% static 'videos/front_page.mp4' %}" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <div id="video-overlay"></div>
+
+    <div class="content-wrapper">
+        <!-- About Header -->
+        <div class="about-header">
+            <h1>About Beneath the Blue</h1>
+            <p>We are a dedicated team of ocean conservationists working to protect marine ecosystems and inspire global stewardship of our blue planet.</p>
+        </div>
+
+        <!-- Mission Section -->
+        <section class="mission-section">
+            <h2>Our Mission</h2>
+            <p>At Beneath the Blue, we believe that the ocean's wonders should be preserved for future generations. Our mission is to educate, inspire, and mobilize people around the world to protect marine ecosystems and promote sustainable practices.</p>
+            <p>Founded in 2020, our organization brings together marine biologists, conservationists, educators, and technology experts to create innovative solutions for ocean conservation. Through research, advocacy, and community engagement, we're working to address the most pressing threats facing our oceans today.</p>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2>Meet Our Team</h2>
+            <div class="team-grid">
+                <!-- Team Member 1 -->
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{% static 'image/aboutUs/neha.jpg' %}" alt="Neha Sharma">
+                    </div>
+                    <h3 class="member-name">Neha Sharma</h3>
+                    <span class="member-role">Frontend & Backend Developer</span>
+                    <p class="member-bio">Specializes in creating impactful solutions using Django,AI technologies, with a focus on solving real-world challenges</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/neha-sharma-ai/"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/nehasharma2210/Beneath-the-blue.git"><i class="fab fa-github"></i></a>
+                        
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{% static 'image/aboutUs/karan.jpeg' %}" alt="Jake Ocean">
+                    </div>
+                    <h3 class="member-name">Karan Bheda</h3>
+                    <span class="member-role">Full Stack Web Developer & Designer</span>
+                    <p class="member-bio">Builds modern, user-centric websites by combining AI-driven solutions with robust web technologies.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/karan-bheda-2a7483335/"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/_karanbheda?igsh=eXh3aG1sam05eDky"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{% static 'image/aboutUs/drisha.jpeg' %}" alt="Sophia Deep">
+                    </div>
+                    <h3 class="member-name">Drisha Chauhan </h3>
+                    <span class="member-role">Frontend Developer & Presenter</span>
+                    <p class="member-bio">Explores new technologies and delivers innovative frontend designs focused on user-friendly experiences</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/drisha-chauhan-3589a2332/"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{% static 'image/aboutUs/vansh.jpeg' %}" alt="Marcus Blue">
+                    </div>
+                    <h3 class="member-name">Vansh Rawat</h3>
+                    <span class="member-role">Frontend Developer & Innovator</span>
+                    <p class="member-bio">Passionate about creating seamless user interfaces and integrating AI/ML into innovative web solutions.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/vansh-rawat-020612337/"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="values-section">
+            <h2>Our Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="value-title">Conservation</h3>
+                    <p>We prioritize the protection and restoration of marine ecosystems through science-based approaches.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="value-title">Community</h3>
+                    <p>We believe in inclusive collaboration with local communities, experts, and stakeholders.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="value-title">Innovation</h3>
+                    <p>We embrace creative solutions and technology to address complex ocean challenges.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="value-title">Education</h3>
+                    <p>We're committed to raising awareness and inspiring action through education.</p>
+                </div>
+            </div>
+        </section>
+
+        {% comment %} <!-- CTA Section -->
+        <section class="cta-section">
+            <h2>Join Our Mission</h2>
+            <p>Whether you want to volunteer, partner with us, or support our work, there are many ways to get involved in protecting our oceans.</p>
+            <a href="#take-action" class="btn">Get Involved</a>
+        </section> {% endcomment %}
+    </div>
+
+    <script>
+        // Simple animation for elements when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            // Observe team members and value cards
+            document.querySelectorAll('.team-member, .value-card').forEach(item => {
+                item.style.opacity = 0;
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(item);
+            });
+        });
+    </script>
+{% endblock %}

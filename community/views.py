@@ -398,3 +398,6 @@ def reset_password(request):
                 messages.error(request, 'User not found')
                 return redirect('password_reset')
     return render(request, 'reset_password.html')
+
+def aboutUs(request):
+    return render(request,'aboutUs.html')

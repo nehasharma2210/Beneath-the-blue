@@ -4,9 +4,6 @@ body {
   overflow: scroll; 
   font-family: 'Sansita', sans-serif;
 }
-.modal{
-  background-image: url("../image/explore_bg.jpg"); /* Using existing background image */
-}
 /* Modern paragraph color */
 p {
   color: #fff;

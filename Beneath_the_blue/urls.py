@@ -41,6 +41,8 @@ urlpatterns = [
     path('posts/<int:post_id>/like/', like_post, name='like_post'),
     path('media/<int:media_id>/delete/', delete_media, name='delete_media'),
     path('add_comment/<int:post_id>/', add_comment, name='add_comment'),
+
+    path('aboutUs/',aboutUs,name='aboutUs'),
     ]
 # Serve media files in both development and production
 from django.views.static import serve

@@ -43,6 +43,7 @@
                                     <li><a href="{% url 'endangered_species' %}">Species</a></li>
                                     <li><a href="{% url 'community_page' %}">Community</a></li>
                                     <li><a href="{% url 'quiz' %}">Quiz</a></li>
+                                    <li><a href="{% url 'aboutUs' %}">About Us</a></li>
                                     {% if user.is_authenticated %}
                                         <li>
                                             <form action="{% url 'user_logout' %}" method="post" class="logout-form">
